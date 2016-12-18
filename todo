@@ -1,0 +1,126 @@
+#!/bin/bash
+
+# If the cache folder doesn't exist, create it
+HOME=~/.todo
+if [ ! -d "$HOME" ]; then
+  mkdir $HOME
+fi
+
+# Create a new, empty todo list
+# \param $1 Name of the list
+function init {
+  if [ -n "$1" ]; then
+    touch "$HOME/$1.txt"
+    echo "Initialized list: $1"
+  else
+    echo "Must initialize with a name"
+  fi
+}
+
+# Delete a todo list that currently exists
+# \param $1 Name of the list to delete
+function delete {
+  if [[ -n "$1" && -f "$HOME/$1.txt" ]]; then
+    rm "$HOME/$1.txt"
+  else
+    echo "No todo list exists for this name"
+  fi
+}
+
+# Two modes of operation:
+#   1) List all todo lists (no params)
+#   2) List all items in a specific todo list (1 param)
+# \param $1 Name of list to list items in
+function list {
+  if [ -n "$1" ]; then
+    # Secondary argument, so list todos in a list
+    out=$(cat "$HOME/$1.txt")
+    if [ -n "$out" ]; then
+      echo "Todos for $1"
+      i=1
+      while read p; do
+        echo "$i - $p"
+        i=$((i + 1))
+      done <"$HOME/$1.txt"
+    else
+      echo "No todos in this list"
+    fi
+  else
+    # No secondary argument, so list the lists
+    echo "All Todo Lists"
+    echo "--------------"
+    ls -1 "$HOME" | sed -e 's/\.txt$//'
+  fi
+}
+
+# Add a todo item to a given list
+# \param $1 List to add to
+# \param $2 Item to add to the list
+function add {
+  if [ -n "$1" ]; then
+    if [ -n "$2" ]; then
+      printf "[ ] $2\n" | cat >> $HOME/$1.txt
+      list "$1"
+    else
+      echo "Todo item not specified"
+    fi
+  else
+    echo "List not specified"
+  fi
+}
+
+# Clear a given todo list
+function clear {
+  if [[ -n "$1" && -f "$HOME/$1.txt" ]]; then
+    rm "$HOME/$1.txt" && touch "$HOME/$1.txt"
+  else
+    echo "No todo list exists for this name"
+  fi
+}
+
+# Mark an item in a list as "completed".
+# \param $1 List to look in
+# \param $2 Number identifying the item to mark
+function comp {
+  if [[ -n "$1" && -f "$HOME/$1.txt" ]]; then
+    wc=$(($(grep -c '' "$HOME/$1.txt")+1)) # Line count
+    if [[ -n "$2" && $2 < $wc ]]; then
+      cat "$HOME/$1.txt" | sed -e "$2s/\[.\]/\[x\]/" > "$HOME/temp.txt"
+      mv "$HOME/temp.txt" "$HOME/$1.txt"
+      list "$1"
+    else
+      echo "No item with this number in list: $1"
+    fi
+  else
+    echo "No todo list exists for this name"
+  fi
+}
+
+# Mark an item in a list as "not completed".
+# \param $1 List to look in
+# \param $2 Number identifying the item to un-mark
+function undo {
+  if [[ -n "$1" && -f "$HOME/$1.txt" ]]; then
+    wc=$(($(grep -c '' "$HOME/$1.txt")+1)) # Line count
+    if [[ -n "$2" && $2 < $wc ]]; then
+      cat "$HOME/$1.txt" | sed -e "$2s/\[x\]/\[ \]/" > "$HOME/temp.txt"
+      mv "$HOME/temp.txt" "$HOME/$1.txt"
+      list "$1"
+    else
+      echo "No item with this number in list: $1"
+    fi
+  else
+    echo "No todo list exists for this name"
+  fi
+}
+
+# Decide what to do based on input
+case "$1" in
+  "init" | "i") init "$2" ;;
+  "rm" | "r") delete "$2" ;;
+  "list" | "ls") list "$2" ;;
+  "add" | "a") add "$2" "$3" ;;
+  "do" | "d") comp "$2" "$3" ;;
+  "undo" | "u") undo "$2" "$3" ;;
+  "clear" | "cls") clear "$2" ;;
+esac
