@@ -6,6 +6,28 @@ if [ ! -d "$HOME" ]; then
   mkdir $HOME
 fi
 
+if [ ! -f "$HOME/.data.txt" ]; then
+  touch "$HOME/.data.txt"
+fi
+
+function listExists {
+  if [[ -n "$1" && -f "$HOME/$1.txt" ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+function hasActive {
+  res=$(grep "active:" $HOME/.data.txt)
+  data=$(echo "$res" | cut -d : -f 2)
+  if [ -n "$data" ]; then
+    return 0 # true
+  else
+    return 1 # false
+  fi
+}
+
 # Create a new, empty todo list
 # \param $1 Name of the list
 function init {
