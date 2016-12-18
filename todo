@@ -31,11 +31,11 @@ function hasActive {
 # Create a new, empty todo list
 # \param $1 Name of the list
 function init {
-  if [ -n "$1" ]; then
+  if [[ -n "$1" && ! -f "$HOME/$1.txt" ]]; then
     touch "$HOME/$1.txt"
     echo "Initialized list: $1"
   else
-    echo "Must initialize with a name"
+    echo "Cannot initialize with this name"
   fi
 }
 
