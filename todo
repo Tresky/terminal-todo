@@ -136,6 +136,33 @@ function undo {
   fi
 }
 
+function setactive {
+  if [ -n "$1" ] && listExists "$1"; then
+    res=$(grep -n "active:" $HOME/.data.txt)
+    line=$(echo "$res" | cut -d : -f 1)
+    data=$(echo "$res" | cut -d : -f 3)
+    if [ -n "$res" ]; then
+      # The data line exists and needs to be edited
+      cat "$HOME/.data.txt" | sed -e "${line}s/active:${data}/active:${1}/" > "$HOME/temp.txt"
+      mv "$HOME/temp.txt" "$HOME/.data.txt"
+    else
+      # The data line does not exist and needs to be appended
+      echo "active:$1" >> "$HOME/.data.txt"
+    fi
+    echo "Active List: $1"
+    list $1
+  else
+    echo "List doesn't exist: $1"
+  fi
+}
+
+# Remove the 'active' flag from the data file
+function noactive {
+  sed "/active:.*/d" "$HOME/.data.txt" > "$HOME/temp.txt"
+  mv "$HOME/temp.txt" "$HOME/.data.txt"
+  echo "No active lists"
+}
+
 # Decide what to do based on input
 case "$1" in
   "init" | "i") init "$2" ;;
