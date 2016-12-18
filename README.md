@@ -4,8 +4,6 @@
 
 **Description:** The purpose of this project is to provide an extremely easy to use, yet versatile interface for managing simple to-do lists within your terminal. As long as this file in your `PATH`, you can execute an array of commands to easily manage multiple lists to keep track of what you need to get done.
 
--
-
 ## Commands:
 **Create a List**
   - `init <list>`: Initialize a new list with a given identifier
