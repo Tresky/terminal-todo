@@ -105,8 +105,8 @@ function clear {
 # \param $2 Number identifying the item to mark
 function comp {
   if [[ -n "$1" && -f "$HOME/$1.txt" ]]; then
-    wc=$(($(grep -c '' "$HOME/$1.txt")+1)) # Line count
-    if [[ -n "$2" && $2 < $wc ]]; then
+    lc=$(($(grep -c '' "$HOME/$1.txt")+1)) # Line count
+    if [[ -n $2 && $2 -lt $lc ]]; then
       cat "$HOME/$1.txt" | sed -e "$2s/\[.\]/\[x\]/" > "$HOME/temp.txt"
       mv "$HOME/temp.txt" "$HOME/$1.txt"
       list "$1"
@@ -123,8 +123,8 @@ function comp {
 # \param $2 Number identifying the item to un-mark
 function undo {
   if [[ -n "$1" && -f "$HOME/$1.txt" ]]; then
-    wc=$(($(grep -c '' "$HOME/$1.txt")+1)) # Line count
-    if [[ -n "$2" && $2 < $wc ]]; then
+    lc=$(($(grep -c '' "$HOME/$1.txt")+1)) # Line count
+    if [[ -n $2 && $2 -lt $lc ]]; then
       cat "$HOME/$1.txt" | sed -e "$2s/\[x\]/\[ \]/" > "$HOME/temp.txt"
       mv "$HOME/temp.txt" "$HOME/$1.txt"
       list "$1"
