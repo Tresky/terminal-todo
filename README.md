@@ -40,4 +40,15 @@
 The concept of an "active" list exists to allow you to skip typing the name of a list when you want to add a lot of tasks to a particular todo list. Rather than typing `todo add <list> "<task to add>"` everytime. You can simply activate a list (`todo activate <list>`) and then just enter `todo add "<task to add>"`, or with the built-in alias, `todo a "<task to add>"`. This will add all following insertions to the same list.
   - `activate <list>`: Set a given list as the "active" list
   - `deactivate`: Set the currently "active" list as "inactive"
-  
+ 
+**For Extra Ease of Use**
+
+For added ease and quicker typing add these two aliases to your terminal:<br />
+<code>alias do="todo add"</code><br />
+<code>alias did="todo do"</code>
+ 
+This will allow you to type something like the following:
+
+<code>do "Task to do" #Will add to the active list</code><br />
+<code>do list "Task to do" #Will add to the list entitled 'list'</code><br />
+<code>did list 2 #Mark item 2 on the list entitled 'list' as completed<br />
