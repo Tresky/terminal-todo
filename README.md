@@ -49,6 +49,8 @@ For added ease and quicker typing add these two aliases to your terminal:<br />
  
 This will allow you to type something like the following:
 
-<code>do "Task to do" #Will add to the active list</code><br />
-<code>do list "Task to do" #Will add to the list entitled 'list'</code><br />
-<code>did list 2 #Mark item 2 on the list entitled 'list' as completed</code><br />
+<code>do "Task to do"</code>: Will add to the active list
+
+<code>do list "Task to do"</code>: Will add to the list entitled 'list'
+
+<code>did list 2</code>: Mark item 2 on the list entitled 'list' as completed
