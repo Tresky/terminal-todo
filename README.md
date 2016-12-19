@@ -51,4 +51,4 @@ This will allow you to type something like the following:
 
 <code>do "Task to do" #Will add to the active list</code><br />
 <code>do list "Task to do" #Will add to the list entitled 'list'</code><br />
-<code>did list 2 #Mark item 2 on the list entitled 'list' as completed<br />
+<code>did list 2 #Mark item 2 on the list entitled 'list' as completed</code><br />
